@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>RefArch Demo Application</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/style.css">
+  </head>
+
+  <body onload="listPosts()">
+    <table>
+      <tr>
+        <td colspan="2">
+          <h1 id="message">RefArch Demo Blog Application</h1>
+        </td>
+      </tr>
+      <tr>
+        <td>
+            <div id="bloglist" style="width: 250px; height: 100px"></div>
+        </td>
+        <td>
+          <form>Add a blog post here</br></br>
+            <input type="text" id="btitle" name="title" placeholder="Enter Blog Title"/>
+            <input type="text" id="bname" name="abstract" placeholder="Enter Blog Abstract"/>
+            <input type="text" id="bbody" name="body" placeholder="Enter Blog Body"/>
+            <button type="button" onclick="addPost()" value="Click here to submit the form">Add a blog post</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <form></br></br>Or view a previous post...</br></br>
+            <button type="button" onclick="fetchPost()" value="Click to display full post">Display Full Post</button>
+            <textarea id="bpost" name="post" rows="30" cols="60"></textarea>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script>
+function addPost() {
+  console.log("hitdb()");
+  axios.post(
+    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/addPost", {
+      title: document.getElementById("btitle").value,
+      abstract: document.getElementById("bname").value,
+      body: document.getElementById("bbody").value
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function (response) {
+     console.log(response);
+    })
+    .catch(function (error) {
+     console.log("error: ", error);
+    }) 
+}
+</script>
+<script>
+function listPosts() {
+  console.log("listposts");
+  axios.get(
+    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/listPosts", {
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function (response) {
+    console.log(response);
+    var blogList = JSON.parse(response.data.msg.body);
+    var blogListText = "Previous Posts<br/><br/>";
+    for ( var i=0;i<blogList.docs.length;i++)
+      {
+        blogListText = blogListText + "title: " + blogList.docs[i].title + "<br/>" + "abstract: " + blogList.docs[i].abstract + "<br/><br/>";
+      };
+    document.getElementById("bloglist").innerHTML = blogListText;
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
+}
+function fetchPost() {
+  document.getElementById("bpost").value = " "
+  console.log("fetchPost");
+  axios.get(
+    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/fetchPost", {
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function (response) {
+    console.log(response);
+    var blogPost = JSON.parse(response.data.msg.body);
+    var blogPostText = "";
+    blogPostText = "title: " + blogPost.docs[0].title + "\n" + "abstract: " + blogPost.docs[0].abstract + "\n\n" + blogPost.docs[0].body;
+    document.getElementById("bpost").value = blogPostText;
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
+}
+
+</script>
+</html>
