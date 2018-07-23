@@ -19,9 +19,9 @@ If you haven't already, sign up for an IBM Cloud account and go to the [Cloud Fu
 
 The application demonstrates two IBM Cloud Functions (based on Apache OpenWhisk) that store (and retrieve) customer reviews in a NoSQL Cloudant database. The use case demonstrates how actions work with data services and execute logic in response to user interaction with a web application.
 
-One function, or action, is triggered by [...]. These [...] are piped to another action in a sequence (a way to link actions declaratively in a chain). The second action aggregates the [...] and [...].
+One function, or action, is triggered by the user visiting a static page.  It in turns calls an API that reads data from the Cloudant database. Once a user has submitted feedback, a second action calls a different API that stores that information in the database, and the original actions is triggered again - thereby displaing their review, and any others that have been submitted since their page was last loaded.
 
-![Sample Architecture](img/refarch-placeholder.png)
+![Sample Architecture](img/refarch.png)
 
 ## Deploy through the IBM Cloud Functions console user interface
 
