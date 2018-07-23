@@ -1,8 +1,8 @@
 # Serverless reference architecture with IBM Cloud Functions (powered by Apache OpenWhisk)
 
-[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-refarch-template.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-refarch-template)
+[![Build Status](https://travis-ci.org/IBM/ibm-cloud-functions-refarch-web-application.svg?branch=master)](https://travis-ci.org/IBM/ibm-cloud-functions-refarch-template)
 
-This reference architecture shows how serverless, event-driven architectures can execute code that scales automatically in response to demand from [...]. No code runs until [...] When that happens, application instances are started to match the load needed by each [...] exactly.
+This reference architecture shows how serverless, event-driven architectures can execute code and interact with databases on static site hosting services that do not support server-side code. No code runs until a page is loaded or a form is submitted.  When that happens, actions are triggered to store data in a NoSQL database whose size expands as needed.
 
 In addition to using cloud resources efficiently, this means that developers can build and deploy applications more quickly. You can learn more about the benefits of building a serverless architecture for this use case in the accompanying [IBM Code Pattern](https://developer.ibm.com/code/technologies/serverless/).
 
@@ -13,10 +13,11 @@ If you haven't already, sign up for an IBM Cloud account and go to the [Cloud Fu
 ## Included components
 
 - IBM Cloud Functions (powered by Apache OpenWhisk)
-- Service A (Powered by open source project A)
-- Service B (Powered by open source project B)
+- Cloudant (powered by Apache-backed CouchDB)
+- API Connect
+- IBM Cloud Object Storage
 
-The application demonstrates two IBM Cloud Functions (based on Apache OpenWhisk) that [...]. The use case demonstrates how actions work with data services and execute logic in response to [...] events.
+The application demonstrates two IBM Cloud Functions (based on Apache OpenWhisk) that store (and retrieve) customer reviews in a NoSQL Cloudant database. The use case demonstrates how actions work with data services and execute logic in response to user interaction with a web application.
 
 One function, or action, is triggered by [...]. These [...] are piped to another action in a sequence (a way to link actions declaratively in a chain). The second action aggregates the [...] and [...].
 
@@ -41,15 +42,15 @@ This approach deploy the Cloud Functions with one command driven by the runtime-
 
 ```bash
 # Get a local copy of this repository
-git clone https://github.com/IBM/ibm-cloud-functions-refarch-template.git
-cd ibm-cloud-functions-refarch-template
+git clone https://github.com/IBM/ibm-cloud-functions-refarch-web-application.git
+cd ibm-cloud-functions-refarch-web-application
 
 # Make service credentials available to your environment
 source local.env
 wsk package refresh
 
-# Deploy the packages, actions, triggers, and rules using your preferred language
-cd runtimes/nodejs # Or runtimes/[php|python|swift]
+# Deploy the packages, actions, triggers, and rules
+cd runtimes/nodejs
 wskdeploy
 ```
 
