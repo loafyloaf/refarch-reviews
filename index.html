@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="stylesheets/global.css">
     <link rel="stylesheet" href="stylesheets/header.css">
+    <link rel="stylesheet" href="stylesheets/reviews.css">
   </head>
 
   <body onload="listReviews()">
@@ -19,31 +20,30 @@
     </div>    
 
 
-    <table>
-      <tr>
-        <td>
-          <form>Product Reviews for $PRODUCT</br></br>
-            Would you like to leave a review?
-            <input type="text" id="rname" name="name" placeholder="Your name"/>
-            <select id="rrating" name="rating">
+    <div class="reviews">
+      <div> 
+          <h3>Product Reviews for PURPLE LIPSTICK</h3><br>
+      </div>
+      <br>
+      <img src="img/purple_lipstick.jpeg">
+      <div id="rlist" style="width: 4000px: height: 100px"></div>
+
+        <form></br>
+	    <h4>Would you like to leave a review?</h4>
+            Your Name: <input type="text" id="rname" name="name" placeholder="Your name"/><br>
+            Your Rating: <select id="rrating" name="rating">
               <option value="none"> </option>
               <option value="1 star">1 star</option>
               <option value="2 stars">2 stars</option>
               <option value="3 stars">3 stars</option>
               <option value="4 stars">4 stars</option>
               <option value="5 stars">5 stars</option>
-            </select>
-            <input type="text" id="rbody" name="body" placeholder="Enter your review"/>
-            <button type="button" onclick="addReview()" value="Click here to submit the form">Add a review</button>
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div id="rlist" style="width: 250px: height: 100px"></div>
-        </td>
-      </tr>
-    </table>
+            </select><br>
+            How did you like our product?<textarea id="rbody" name="body" rows="5" cols="30"></textarea><br>
+            <button type="button" onclick="addReview()" value="Click here to submit the form">Submit your review</button>
+        </form>
+
+    </div>
   </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script>
@@ -59,11 +59,11 @@ function addReview() {
     })
     .then(function (response) {
      console.log(response);
+     listReviews();
     })
     .catch(function (error) {
      console.log("error: ", error);
-    });
-  listReviews()
+    })
 }
 </script>
 <script>
@@ -77,10 +77,10 @@ function listReviews() {
     .then(function (response) {
     console.log(response);
     var rList = JSON.parse(response.data.msg.body);
-    var rListText = "Previous Reviews<br/><br/>";
+    var rListText = "<br><h4>Previous Reviews</h4>";
     for ( var i=0;i<rList.docs.length;i++)
       {
-        rListText = rListText + "Reviewer Name: " + rList.docs[i].name + "<br/>" + "Rating: " + rList.docs[i].rating + "<br/><br/>" + "Review:" + rList.docs[i].body + "<br/><br/>";
+        rListText = rListText + "<div class='imageLabel'>" + "Reviewer Name: " + rList.docs[i].name + "<br/>" + "Rating: " + rList.docs[i].rating + "<br>" + "Review: " + rList.docs[i].body + "<br></div><br>";
       };
     document.getElementById("rlist").innerHTML = rListText;
     })
