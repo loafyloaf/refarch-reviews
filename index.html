@@ -2,48 +2,58 @@
 <html>
 
   <head>
-    <title>RefArch Demo Application</title>
+    <title>RefArch Demo Customer Feedback Application</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="stylesheets/global.css">
+    <link rel="stylesheet" href="stylesheets/header.css">
   </head>
 
-  <body onload="listPosts()">
+  <body onload="listReviews()">
+    
+    <div class="header">
+      <div class="title">
+        RefArch Demo Customer Feedback Application
+      </div>
+    </div>    
+
+
     <table>
-      <tr>
-        <td colspan="2">
-          <h1 id="message">RefArch Demo Customer Feedback Application</h1>
-        </td>
-      </tr>
       <tr>
         <td>
           <form>Product Reviews for $PRODUCT</br></br>
             Would you like to leave a review?
-            <input type="text" id="btitle" name="title" placeholder="Your name"/>
-            <input type="text" id="bname" name="abstract" placeholder="Rating"/>
-            <input type="text" id="bbody" name="body" placeholder="Enter your review"/>
-            <button type="button" onclick="addPost()" value="Click here to submit the form">Add a review</button>
+            <input type="text" id="rname" name="name" placeholder="Your name"/>
+            <select id="rrating" name="rating">
+              <option value="none"> </option>
+              <option value="1 star">1 star</option>
+              <option value="2 stars">2 stars</option>
+              <option value="3 stars">3 stars</option>
+              <option value="4 stars">4 stars</option>
+              <option value="5 stars">5 stars</option>
+            </select>
+            <input type="text" id="rbody" name="body" placeholder="Enter your review"/>
+            <button type="button" onclick="addReview()" value="Click here to submit the form">Add a review</button>
           </form>
         </td>
       </tr>
       <tr>
-        <td></td>
         <td>
-          <div id "bloglist" style="width: 250px: height: 100px"></div>
+          <div id="rlist" style="width: 250px: height: 100px"></div>
         </td>
       </tr>
     </table>
   </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script>
-function addPost() {
+function addReview() {
   console.log("hitdb()");
   axios.post(
-    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/addPost", {
-      title: document.getElementById("btitle").value,
-      abstract: document.getElementById("bname").value,
-      body: document.getElementById("bbody").value
+    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/refarchReviews/addReview", {
+      name: document.getElementById("rname").value,
+      rating: document.getElementById("rrating").value,
+      body: document.getElementById("rbody").value
     }, {
       headers: { 'Content-Type': 'application/json' }
     })
@@ -52,45 +62,27 @@ function addPost() {
     })
     .catch(function (error) {
      console.log("error: ", error);
-    }) 
+    });
+  listReviews()
 }
 </script>
 <script>
-function listPosts() {
-  console.log("listposts");
+function listReviews() {
+  console.log("listreviews");
   axios.get(
-    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/listPosts", {
+    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/refarchReviews/listReviews", {
     }, {
       headers: { 'Content-Type': 'application/json' }
     })
     .then(function (response) {
     console.log(response);
-    var blogList = JSON.parse(response.data.msg.body);
-    var blogListText = "Previous Posts<br/><br/>";
-    for ( var i=0;i<blogList.docs.length;i++)
+    var rList = JSON.parse(response.data.msg.body);
+    var rListText = "Previous Reviews<br/><br/>";
+    for ( var i=0;i<rList.docs.length;i++)
       {
-        blogListText = blogListText + "title: " + blogList.docs[i].title + "<br/>" + "abstract: " + blogList.docs[i].abstract + "<br/><br/>";
+        rListText = rListText + "Reviewer Name: " + rList.docs[i].name + "<br/>" + "Rating: " + rList.docs[i].rating + "<br/><br/>" + "Review:" + rList.docs[i].body + "<br/><br/>";
       };
-    document.getElementById("bloglist").innerHTML = blogListText;
-    })
-    .catch(function (error) {
-    console.log(error);
-    });
-}
-function fetchPost() {
-  document.getElementById("bpost").value = " "
-  console.log("fetchPost");
-  axios.get(
-    "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/0c8f59e1d1d5405e25c88917bb965b2defd073b8ed3b5717183d253c13758c1a/api/fetchPost", {
-    }, {
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(function (response) {
-    console.log(response);
-    var blogPost = JSON.parse(response.data.msg.body);
-    var blogPostText = "";
-    blogPostText = "title: " + blogPost.docs[0].title + "\n" + "abstract: " + blogPost.docs[0].abstract + "\n\n" + blogPost.docs[0].body;
-    document.getElementById("bpost").value = blogPostText;
+    document.getElementById("rlist").innerHTML = rListText;
     })
     .catch(function (error) {
     console.log(error);
