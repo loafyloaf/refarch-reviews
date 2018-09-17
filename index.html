@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="stylesheets/global.css">
     <link rel="stylesheet" href="stylesheets/header.css">
     <link rel="stylesheet" href="stylesheets/reviews.css">
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
   </head>
 
   <body onload="listReviews()">
-    
+    <div id="container">
     <div class="header">
       <div class="title">
         RefArch Demo Customer Feedback Application
@@ -21,28 +22,37 @@
 
 
     <div class="reviews">
-      <div> 
-          <h3>Product Reviews for PURPLE LIPSTICK</h3><br>
-      </div>
       <br>
-      <img src="img/purple_lipstick.jpeg">
-      <div id="rlist" style="width: 4000px: height: 100px"></div>
 
         <form></br>
-	    <h4>Would you like to leave a review?</h4>
-            Your Name: <input type="text" id="rname" name="name" placeholder="Your name"/><br>
-            Your Rating: <select id="rrating" name="rating">
-              <option value="none"> </option>
-              <option value="1 star">1 star</option>
-              <option value="2 stars">2 stars</option>
-              <option value="3 stars">3 stars</option>
-              <option value="4 stars">4 stars</option>
-              <option value="5 stars">5 stars</option>
-            </select><br>
-            How did you like our product?<textarea id="rbody" name="body" rows="5" cols="30"></textarea><br>
-            <button type="button" onclick="addReview()" value="Click here to submit the form">Submit your review</button>
+	    <h4>Please leave a review for our PURPLE LIPSTICK!</h4>
+            YOUR NAME:
+            <p>
+            <input type="text" id="rname" name="name" placeholder="Your name"/><br>
+            <p class="rating">SELECT YOUR RATING: </br>
+			<input type="checkbox" id="st1" value="1" />
+			<label for="st1"></label>
+			<input type="checkbox" id="st2" value="2" />
+			<label for="st2"></label>
+			<input type="checkbox" id="st3" value="3" />
+			<label for="st3"></label>
+			<input type="checkbox" id="st4" value="4" />
+			<label for="st4"></label>
+			<input type="checkbox" id="st5" value="5" />
+			<label for="st5"></label>
+			</p>
+			</br>
+			<p>
+            COMMENT:
+			</p>
+			<p>
+			<textarea id="rbody" name="body" rows="5" cols="30"></textarea><br>
+            <button type="button" onclick="addReview()" value="Click here to submit the form">
+			
+			Submit your review</button>
+			</p>
         </form>
-
+     <div id="rlist" style=" height: 100px"></div>
     </div>
   </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
